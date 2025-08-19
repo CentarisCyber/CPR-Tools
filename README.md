@@ -27,6 +27,12 @@ A collection of PowerShell one-liners for quick security checks that return bool
 - **has-dmarc.ps1** - Check if domain has DMARC record  
 - **has-dkim.ps1** - Check if domain has DKIM record
 
+## Quick Start
+
+For copy/paste one-liners that don't require file downloads, see [ONE-LINERS.md](ONE-LINERS.md).
+
+For batch execution of all checks, use `run-all-checks.ps1`.
+
 ## Usage
 
 ### Basic Checks (no parameters)
@@ -63,7 +69,10 @@ Invoke-Command -ComputerName "RemotePC" -FilePath ".\is-admin.ps1"
 
 ### Batch Execution
 ```powershell
-# Run all basic checks and collect results
+# Run all checks using the batch script
+.\run-all-checks.ps1 -Domain "yourdomain.com" -DkimSelector "selector1"
+
+# Or run all basic checks and collect results manually
 $results = @{
     IsAdmin = .\is-admin.ps1
     RdpEnabled = .\is-rdp-enabled.ps1
