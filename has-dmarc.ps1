@@ -1,0 +1,1 @@
+param([string]$Domain = 'example.com'); try {$txt = (Resolve-DnsName -Name "_dmarc.$Domain" -Type TXT -ErrorAction SilentlyContinue).Strings -join ' '; if (-not $txt) {$false} else {($txt -match 'v=dmarc1')}} catch {$false}

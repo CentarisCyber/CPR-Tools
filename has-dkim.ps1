@@ -1,0 +1,1 @@
+param([string]$Selector = 'default', [string]$Domain = 'example.com'); try {$txt = (Resolve-DnsName -Name "$Selector._domainkey.$Domain" -Type TXT -ErrorAction SilentlyContinue).Strings -join ' '; if (-not $txt) {$false} else {($txt -match 'v=DKIM1' -or $txt -match 'k=rsa')}} catch {$false}

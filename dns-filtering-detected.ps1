@@ -1,0 +1,1 @@
+try {$known = @('208.67.222.222','208.67.220.220','1.1.1.2','1.1.1.3','9.9.9.9','185.228.168.9','185.228.169.9','94.140.14.14'); $servers = (Get-DnsClientServerAddress -AddressFamily IPv4 -ErrorAction SilentlyContinue).ServerAddresses; if (-not $servers) {$false} else {($servers | Where-Object {$known -contains $_}).Count -gt 0}} catch {$false}

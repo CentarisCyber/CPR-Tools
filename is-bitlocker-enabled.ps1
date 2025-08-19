@@ -1,0 +1,1 @@
+try {$b = Get-BitLockerVolume -MountPoint 'C:' -ErrorAction SilentlyContinue; if (-not $b) {$false} else {($b.ProtectionStatus -eq 'On') -or ($b.ProtectionStatus -eq 1)}} catch {$false}

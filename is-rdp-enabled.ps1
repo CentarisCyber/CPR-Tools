@@ -1,0 +1,1 @@
+try {(Get-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name 'fDenyTSConnections' -ErrorAction Stop).fDenyTSConnections -eq 0} catch {$false}

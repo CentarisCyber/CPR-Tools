@@ -1,0 +1,1 @@
+try {((Get-NetIPAddress -AddressFamily IPv4 | Where-Object {$_.IPAddress -and $_.IPAddress -notlike '127.*'}) | ForEach-Object {($_.IPAddress.Split('.')[0..2] -join '.')} | Select-Object -Unique).Count -gt 1} catch {$false}

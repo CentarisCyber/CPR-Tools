@@ -1,0 +1,1 @@
+param([string]$Domain = 'example.com'); try {$txt = (Resolve-DnsName -Name $Domain -Type TXT -ErrorAction SilentlyContinue).Strings -join ' '; if (-not $txt) {$false} else {($txt -match 'v=spf1')}} catch {$false}

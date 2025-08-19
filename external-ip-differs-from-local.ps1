@@ -1,0 +1,1 @@
+try {$ext = (Invoke-RestMethod -Uri 'https://api.ipify.org?format=text' -UseBasicParsing -ErrorAction Stop).Trim(); $localIPs = (Get-NetIPAddress -AddressFamily IPv4 | Where-Object {$_.IPAddress -and $_.IPAddress -notlike '127.*'}).IPAddress; if (-not $localIPs) {$null} else {-not ($localIPs -contains $ext)}} catch {$null}

@@ -1,0 +1,1 @@
+try {$h = Get-HotFix -ErrorAction SilentlyContinue | Sort-Object InstalledOn -Descending | Select-Object -First 1; if (-not $h) {$false} else {$h.InstalledOn -gt (Get-Date).AddDays(-90)}} catch {$false}
