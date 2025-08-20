@@ -53,6 +53,11 @@ try {$pattern = 'Huntress|SentinelOne|CrowdStrike|Sophos|Cylance|Carbon Black|Mi
 try {$pattern = 'Veeam|Acronis|Datto|ShadowProtect|Commvault|Rubrik'; $apps = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*, HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* -ErrorAction SilentlyContinue | Select-Object -ExpandProperty DisplayName -ErrorAction SilentlyContinue; if (-not $apps) {$false} else {(($apps -join '|') -match $pattern)}} catch {$false}
 ```
 
+### Check if SecurityServiceAgent is installed
+```powershell
+try {$pattern = 'SecurityServiceAgent'; $apps = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*, HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* -ErrorAction SilentlyContinue | Select-Object -ExpandProperty DisplayName -ErrorAction SilentlyContinue; if (-not $apps) {$false} else {(($apps -join '|') -match $pattern)}} catch {$false}
+```
+
 ### Check if firewall management ports are open
 ```powershell
 try {$rules = Get-NetFirewallRule -Direction Inbound -Enabled True -ErrorAction SilentlyContinue; if (-not $rules) {$false} else {$found = $false; foreach ($r in $rules) {$pf = Get-NetFirewallPortFilter -AssociatedNetFirewallRule $r -ErrorAction SilentlyContinue; $af = Get-NetFirewallAddressFilter -AssociatedNetFirewallRule $r -ErrorAction SilentlyContinue; if ($pf -and $af) {$ports = ($pf.LocalPort -split ',') | ForEach-Object {$_.Trim()}; $remoteAny = $af.RemoteAddress -in @('Any','0.0.0.0/0','::/0'); if ($remoteAny -and ($ports -match '^(22|443|3389)$')) {$found = $true; break}}}; $found}} catch {$false}

@@ -18,9 +18,16 @@ A collection of PowerShell one-liners for quick security checks that return bool
 - **external-ip-differs-from-local.ps1** - Check if external IP differs from local
 
 ### Security Agent Checks
-- **malware-agent-installed.ps1** - Check if known malware protection is installed
+- **MDR-agent-installed.ps1** - Check if known malware protection is installed
 - **backup-agent-installed.ps1** - Check if known backup agents are installed
+- **security-service-agent-installed.ps1** - Check if SecurityServiceAgent is installed
 - **firewall-mgmt-ports-open.ps1** - Check if management ports (22, 443, 3389) are open in firewall
+
+### Network Security Management
+- **discover-and-install-security-agent.ps1** - Scan local network for devices and auto-install SecurityServiceAgent
+- **scan-and-install-security-agent.ps1** - Advanced network scanner with comprehensive agent management
+
+For detailed network scanning examples and usage patterns, see [NETWORK-SCANNER-EXAMPLES.md](NETWORK-SCANNER-EXAMPLES.md).
 
 ### DNS Security Checks (require domain parameter)
 - **has-spf.ps1** - Check if domain has SPF record
@@ -67,6 +74,22 @@ Invoke-Command -ComputerName "RemotePC" -FilePath ".\is-admin.ps1"
 .\has-dkim.ps1 -Selector "selector1" -Domain "yourdomain.com"
 ```
 
+### Network Management and Agent Deployment
+```powershell
+# Scan local network and install SecurityServiceAgent where missing
+.\discover-and-install-security-agent.ps1 -AgentUrl "https://yourserver.com/SecurityServiceAgent.msi"
+
+# Dry run to see what would be installed
+.\discover-and-install-security-agent.ps1 -AgentUrl "https://yourserver.com/SecurityServiceAgent.msi" -WhatIf
+
+# Scan specific subnet with credentials
+$cred = Get-Credential
+.\discover-and-install-security-agent.ps1 -SubnetRange "10.0.1.0/24" -AgentUrl "https://yourserver.com/SecurityServiceAgent.msi" -Credential $cred
+
+# Advanced scanning with comprehensive features
+.\scan-and-install-security-agent.ps1 -SubnetRange "192.168.1.0/24" -AgentPath "C:\installers\agent.msi" -Credential $cred
+```
+
 ### Batch Execution
 ```powershell
 # Run all checks using the batch script
@@ -82,7 +105,8 @@ $results = @{
     MultipleSubnets = .\multiple-subnets-detected.ps1
     UserIsAdmin = .\current-user-is-local-admin.ps1
     DnsFiltering = .\dns-filtering-detected.ps1
-    MalwareAgent = .\malware-agent-installed.ps1
+    MalwareAgent = .\MDR-agent-installed.ps1
+    SecurityServiceAgent = .\security-service-agent-installed.ps1
     BackupAgent = .\backup-agent-installed.ps1
     MgmtPortsOpen = .\firewall-mgmt-ports-open.ps1
     ExternalIpDiffers = .\external-ip-differs-from-local.ps1
